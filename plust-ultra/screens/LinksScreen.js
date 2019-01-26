@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#335075',
   },
   footerContainer: {
     marginTop: 5,
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: '#aaa',
+    color: '#335075',
   },
 });
