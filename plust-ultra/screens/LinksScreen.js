@@ -5,7 +5,6 @@ import {GiftedChat} from 'react-native-gifted-chat';
 
 let id = 1;
 export default class LinksScreen extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -43,23 +42,7 @@ export default class LinksScreen extends React.Component {
       messages: GiftedChat.append(previousState.messages, messages),
     }))
     this.isTyping();
-    id += 1;
-    setTimeout(() => {
-      const message = {
-        _id: id,
-        text: 'YOU SUCK',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      };
-      this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, [message]),
-        typingText: null
-      }))
-    }, 1000);
+    this.decideWhatToDo(messages[0].text);
   }
 
   renderFooter(props) {
@@ -73,6 +56,52 @@ export default class LinksScreen extends React.Component {
       );
     }
     return null;
+  }
+
+  async decideWhatToDo(text) {
+    var aa = "jumbo";
+    id += 1;
+
+    if (text.includes('event')) {
+      aa = "Here are some events currently in your area...";
+      setTimeout(() => {
+        const message = {
+          _id: id,
+          text: aa,
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://placeimg.com/140/140/any',
+          },
+        };
+        this.setState(previousState => ({
+          messages: GiftedChat.append(previousState.messages, [message]),
+          typingText: null
+        }));
+
+        setTimeout(() => {
+          this.props.navigation.navigate('Settings');
+        }, 3000)
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        const message = {
+          _id: id,
+          text: aa,
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://placeimg.com/140/140/any',
+          },
+        };
+        this.setState(previousState => ({
+          messages: GiftedChat.append(previousState.messages, [message]),
+          typingText: null
+        }))
+      }, 1000);
+    }
   }
 
   render() {
