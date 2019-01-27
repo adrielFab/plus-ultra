@@ -3,8 +3,26 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import {GiftedChat} from 'react-native-gifted-chat';
 
+
 let id = 1;
+var photoAvatar = require('../images/ConUBot.png');
+
 export default class LinksScreen extends React.Component {
+
+  static navigationOptions = {
+
+    title: 'Home',
+    headerStyle: {
+      backgroundColor: '#335075',
+    },
+    //title color
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -17,15 +35,15 @@ export default class LinksScreen extends React.Component {
   componentWillMount() {
     this.setState({
       messages: [
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
+        {
+          _id: 1,
+          text: 'Hello developer',
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'photoAvatar',
+          },
       },
       ],
     })
@@ -98,7 +116,7 @@ responseSpecify(){
       user: {
         _id: 2,
         name: 'React Native',
-        avatar: 'https://placeimg.com/140/140/any',
+        avatar: photoAvatar,
       },
     };
     this.setState(previousState => ({
@@ -118,7 +136,7 @@ analyze(text, key){
       user: {
         _id: 2,
         name: 'React Native',
-        avatar: 'https://placeimg.com/140/140/any',
+        avatar: photoAvatar,
       },
     };
     this.setState(previousState => ({
