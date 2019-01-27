@@ -33,6 +33,7 @@ export default class SettingsScreen extends React.Component {
     }
     this.setState({
       events: temp,
+      distance: this.state.distance + 1,
     });
   }
 
