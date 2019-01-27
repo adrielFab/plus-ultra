@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View, TouchableOpacity, TouchableHighlight, Alert } from 'react-native';
+import { TextInput,Modal, Image, Text, View, TouchableOpacity, TouchableHighlight, Alert } from 'react-native';
 import { MapView } from "expo";
 import Client from 'predicthq';
 
@@ -89,7 +89,13 @@ export default class SettingsScreen extends React.Component {
       nextUrl: null,
       distance: 1,
       eventSelected: null,
+      modalVisible: false,
+      newtitle: null,
+      newdescription: null,
     };
+  }
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
 
   getEvents () {
@@ -120,6 +126,12 @@ export default class SettingsScreen extends React.Component {
     // });
   }
 
+  mapClick(event) {
+    console.log(event);
+    this.setModalVisible(true);
+    
+  }
+
   markerClick(event) {
     console.log(event);
     this.setState({
@@ -142,6 +154,7 @@ export default class SettingsScreen extends React.Component {
           longitudeDelta: 0.0221
         }}
         showsUserLocation={true}
+        onPress={(b) => this.mapClick(b.nativeEvent) }
       >
       { this.state.isLoading ? null :
         this.state.events.map((event, index) => {

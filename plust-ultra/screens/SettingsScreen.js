@@ -31,6 +31,10 @@ export default class SettingsScreen extends React.Component {
     var concordiaCoord = {latitude: 45.4954, longitude: -73.5792}
     var temp = {};
     temp['distance'] = 10000;
+    var lat;
+    var name;
+    var long;
+    var address;
     for (var i=0; i<json.length; i++){
       if (key == "pool"){
         lat = json[i]["LAT"]
@@ -51,7 +55,6 @@ export default class SettingsScreen extends React.Component {
 
       location = {}
       location['distance'] = distance
-
       if (temp['distance'] > location['distance']){
         location['lat'] = lat
         location['name'] = name
@@ -61,18 +64,19 @@ export default class SettingsScreen extends React.Component {
         temp['long'] = location['long']
         temp['address'] = location['address']
         temp['distance'] = location['distance']
+        temp['name'] = location['name']
       }
     }
-    
-    // temp['distance'] = temp['distance']/1000
-    console.log('temp')
-    console.log(temp)
-    return temp
+    console.log('BRUHH' +  temp);
+    this.setState({
+      location: temp,
+    }, () => {
+    this.setState({isLoading: false})
+    });
   }
 
  async getMore() {
     var rr = await this.getEvents();
-    console.log(rr.result);
     var temp = this.state.events;
     for (let i = 0; i < rr.result.results.length; i++) {
       temp.push(rr.result.results[i]);
@@ -92,17 +96,12 @@ export default class SettingsScreen extends React.Component {
       json: this.props.navigation.state.params.json,
       key: this.props.navigation.state.params.key,
     });
-    var location = this.match()
-    console.log("location: test "+location)
-    this.setState({
-      location: location,
-    }, () => {
-    console.log("location "+this.state.location);
-    this.setState({isLoading: false,})
-    })
+    this.match()
   }
 
   render() {
+    console.log(this.state.location);
+
     return (
       <View style={{ flex: 1}}>
       <MapView
@@ -111,45 +110,33 @@ export default class SettingsScreen extends React.Component {
           height: 100,
         }}
         initialRegion={{
-          latitude: 45.4948609,
-          longitude: -73.5780571,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
+          latitude: this.state.location.lat,
+          longitude: this.state.location.long,
+          latitudeDelta: 0.0022,
+          longitudeDelta: 0.0121
         }}
+        showsUserLocation={true}
       >
       <MapView.Marker
          coordinate={{
            latitude: this.state.location['lat'],
            longitude: this.state.location['long']
          }}
-         title={this.state.location['name']}
-         description={this.state.location['description']}
+         title={this.state.location.name}
+         description={this.state.location.address}
       />
-      { 
-        this.state.isLoading ? null :
-        this.state.events.map((event, index) => {
-          const coords = {
-              latitude: event.location[1],
-              longitude: event.location[0],
-          };
-     
-     
-          return (
-              <MapView.Marker
-                 key={index}
-                 coordinate={coords}
-                 title={event.title}
-                 description={event.description}
-              />
-          );
-        })
-     }
       </MapView>
-      <TouchableOpacity onPress={() => this.getMore()} style={{ position: 'absolute', bottom: 60, left: 40 ,width: '80%', }}>
-          <Text style={{ fontSize: 16,backgroundColor: '#586cb2', overflow: 'hidden', borderRadius: 10, color: '#fff', textAlign: 'center',
-        paddingVertical: 10}}>
-            See more
+      <TouchableOpacity onPress={() => this.getMore()} style={{ backgroundColor: '#586cb2', overflow: 'hidden', borderRadius: 10,  position: 'absolute', bottom: 60, left: 40 ,width: '80%', padding: 10, }}>
+          <Text style={{ fontSize: 21, color: '#fff' }}>
+            {this.state.location.name}
           </Text>
+          <Text style={{ fontSize: 16, color: '#eee'}}>
+            {this.state.location.address}
+          </Text>
+
+          <Text style={{ width: '100%',backgroundColor: '#fff', textAlign: 'center', borderRadius: 10, overflow: 'hidden', marginTop: 5, padding: 10}}>
+                      See more
+                    </Text>
         </TouchableOpacity>
       </View>
     );

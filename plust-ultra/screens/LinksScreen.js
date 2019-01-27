@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {GiftedChat, Bubble} from 'react-native-gifted-chat';
+import IsTyping from '../components/IsTyping';
 
-
-let id = 1;
+let id = 0;
+var defaultText = 1;
 var photoAvatar = require('../images/ConUBot.png');
 
 export default class LinksScreen extends React.Component {
@@ -30,6 +31,7 @@ export default class LinksScreen extends React.Component {
       typingText: null,
     }
     this.renderFooter = this.renderFooter.bind(this);
+    this.renderBubble = this.renderBubble.bind(this);
   }
 
   componentWillMount() {
@@ -42,7 +44,7 @@ export default class LinksScreen extends React.Component {
           user: {
             _id: 2,
             name: 'React Native',
-            avatar: 'photoAvatar',
+            avatar: photoAvatar,
           },
       },
       ],
@@ -66,17 +68,57 @@ export default class LinksScreen extends React.Component {
   renderFooter(props) {
     if (this.state.typingText) {
       return (
-        <View style={styles.footerContainer}>
-        <Text style={styles.footerText}>
-        {this.state.typingText}
-        </Text>
-        </View>
-        );
+        <IsTyping circleColor="#3c5396" />
+      );
     }
     return null;
   }
 
+  getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
   async decideWhatToDo(text) {
+    if (text.toLowerCase().includes('basket')) {
+      setTimeout(() => {
+        const message = {
+          _id: id,
+          text: 'Looks like some are hosting some events',
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: photoAvatar,
+          },
+        };
+        id += 1;
+        this.setState(previousState => ({
+          messages: GiftedChat.append(previousState.messages, [message]),
+        }))
+        setTimeout(() => {
+          const message = {
+            _id: id,
+            text: 'Here are some of the closest events near you',
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: 'React Native',
+              avatar: photoAvatar,
+            },
+          };
+          id += 1;
+          this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, [message]),
+            typingText: null
+          }))
+          setTimeout(() => {
+            id += 1;
+            this.props.navigation.navigate('People');
+          }, 5000);
+        }, 4000);
+      }, 4000);
+      return;
+    }
     id += 1;
     keyword = "";
     heritage_index = ["heritage", "history"];
@@ -101,34 +143,18 @@ export default class LinksScreen extends React.Component {
       if (j==indexes.length-1){
         console.log("i "+i+"indexes.length "+indexes.length)
         this.responseSpecify()
-      }
+      } 
     }
   }
 
 responseSpecify(){
-  var msg = "Could you please specify what activity you are looking for?";
-  setTimeout(() => {
-    const message = {
-      _id: id,
-      text: msg,
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: 'React Native',
-        avatar: photoAvatar,
-      },
-    };
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, [message]),
-      typingText: null
-    }))
-  }, 1000);
-}
-
-analyze(text, key){
-  msg = "Here are some events from the "+key+" category...";
-  json = this.parseJson(key)
-  console.log(json)
+  var bob = [
+    "Could you please specify what activity you are looking for?",
+    "Let us serve you to our fullest potential, can you share what you need?",
+    "So how can we help you?"
+  ];
+  var msg = bob[this.getRandomInt(3)];
+  id += 1;
   setTimeout(() => {
     const message = {
       _id: id,
@@ -144,11 +170,63 @@ analyze(text, key){
       messages: GiftedChat.append(previousState.messages, [message]),
       typingText: null
     }));
-
-    setTimeout(() => {
-      this.props.navigation.navigate('Settings', {json:json, key:key});
-    }, 3000)
+    id += 1;
   }, 1000);
+}
+
+renderBubble(props) {
+  return (
+    <Bubble
+      {...props}
+      wrapperStyle={{
+        right: {
+          backgroundColor: '#335075',
+        },
+      }}
+    />
+  );
+}
+
+analyze(text, key){
+  id += 1;
+  setTimeout(() => {
+    const message = {
+      _id: id,
+      text: `Looking for the nearest ${key}`,
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: 'React Native',
+        avatar: photoAvatar,
+      },
+    };
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, [message]),
+    }));
+    json = this.parseJson(key)
+    id += 3;
+    setTimeout(() => {
+      const message = {
+        _id: id,
+        text: `Here is a ${key} we found`,
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+          avatar: photoAvatar,
+        },
+      };
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, [message]),
+        typingText: null,
+      }));
+      id += 1;
+      setTimeout(() => {
+        id += 1;
+        this.props.navigation.navigate('Settings', {json:json, key:key});
+      }, 3000)
+    }, 4000);
+  }, 3000);
 }
 
 parseJson(key){
@@ -180,6 +258,7 @@ render() {
       _id: 1,
     }}
     renderFooter={this.renderFooter}
+    renderBubble={this.renderBubble}
     />
 
     );
