@@ -12,7 +12,6 @@ const LinksStack = createStackNavigator({
   Settings: SettingsScreen,
   People: PeopleScreen,
 }, {
-  initialRouteName: 'People',
 });
 
 export default LinksStack;

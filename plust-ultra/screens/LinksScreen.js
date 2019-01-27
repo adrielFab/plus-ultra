@@ -44,7 +44,7 @@ export default class LinksScreen extends React.Component {
             name: 'React Native',
             avatar: 'photoAvatar',
           },
-        },
+      },
       ],
     })
   }
@@ -67,74 +67,102 @@ export default class LinksScreen extends React.Component {
     if (this.state.typingText) {
       return (
         <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>
-            {this.state.typingText}
-          </Text>
+        <Text style={styles.footerText}>
+        {this.state.typingText}
+        </Text>
         </View>
-      );
+        );
     }
     return null;
   }
 
   async decideWhatToDo(text) {
-    var aa = "jumbo";
     id += 1;
+    keyword = "";
+    heritage_index = ["heritage", "history"];
+    cultural_index = ["culture", "museum", "theatre", "cinema", "show room", "performance", "exhibition"];
+    event_index = ["event"];
+    pool_index = ["pool"];
+    school_index = ["school", "study"];
+    library_index = ["library"];
+    indexes = [heritage_index, cultural_index, event_index, pool_index, school_index, library_index]
 
-    if (text.includes('event')) {
-      aa = "Here are some events currently in your area...";
-      setTimeout(() => {
-        const message = {
-          _id: id,
-          text: aa,
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: photoAvatar,
-          },
-        };
-        this.setState(previousState => ({
-          messages: GiftedChat.append(previousState.messages, [message]),
-          typingText: null
-        }));
+    for (var j in indexes){
+      index = indexes[j]
+      key = index[0]
+      console.log("-----")
+      for (var i=0; i<index.length; i++){
+        keyword = index[i]
+        if (text.toLowerCase().indexOf(keyword.toLowerCase()) > -1){
+          this.analyze(text, key)
+          return;
+        }
+      }
 
-        setTimeout(() => {
-          this.props.navigation.navigate('Settings');
-        }, 3000)
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        const message = {
-          _id: id,
-          text: aa,
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: photoAvatar,
-          },
-        };
-        this.setState(previousState => ({
-          messages: GiftedChat.append(previousState.messages, [message]),
-          typingText: null
-        }))
-      }, 1000);
+      if (j==indexes.length-1){
+        console.log("i "+i+"indexes.length "+indexes.length)
+        this.responseSpecify()
+      }
     }
   }
 
-  render() {
-    return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-        renderFooter={this.renderFooter}
-      />
+responseSpecify(){
+  var msg = "Could you please specify what activity you are looking for?";
+  setTimeout(() => {
+    const message = {
+      _id: id,
+      text: msg,
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: 'React Native',
+        avatar: photoAvatar,
+      },
+    };
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, [message]),
+      typingText: null
+    }))
+  }, 1000);
+}
+
+analyze(text, key){
+  aa = "Here are some events from the "+key+" category...";
+  setTimeout(() => {
+    const message = {
+      _id: id,
+      text: aa,
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: 'React Native',
+        avatar: photoAvatar,
+      },
+    };
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, [message]),
+      typingText: null
+    }));
+
+    setTimeout(() => {
+      this.props.navigation.navigate('Settings');
+    }, 3000)
+  }, 1000);
+}
+
+render() {
+  return (
+    <GiftedChat
+    messages={this.state.messages}
+    onSend={messages => this.onSend(messages)}
+    user={{
+      _id: 1,
+    }}
+    renderFooter={this.renderFooter}
+    />
 
     );
-  }
+}
 }
 
 const styles = StyleSheet.create({
