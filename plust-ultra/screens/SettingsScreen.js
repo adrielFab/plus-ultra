@@ -75,8 +75,77 @@ export default class SettingsScreen extends React.Component {
     });
   }
 
+  matchMore(matched){
+    var concordiaCoord = {latitude: 45.4954, longitude: -73.5792}
+    var temp = {};
+    temp['distance'] = 10000;
+    var lat;
+    var name;
+    var long;
+    var address;
+
+    console.log(json.length)
+    lat = ""
+    long = ""
+    for (var j=0; j<json.length; j++){
+      if (key == "pool"){
+        lat = json[j]["LAT"]
+        long = json[j]["LONG"]
+      } else if (key == "culture"){
+        lat = json[j]["Latitude"]
+        long = json[j]["Longitude"]
+      }
+
+      if (lat === matched["lat"] && long === matched["long"]){
+        json.splice(j, 1);
+      }
+    }
+    console.log(json.length)
+
+    for (var i=0; i<json.length; i++){
+      if (key == "pool"){
+        lat = json[i]["LAT"]
+        name = json[i]["NOM"]
+        long = json[i]["LONG"]
+        address = json[i]["ADRESSE"]
+      } else if (key == "culture"){
+        lat = json[i]["Latitude"]
+        name = json[i]["Name of the municipal cultural Place"]
+        long = json[i]["Longitude"]
+        address = json[i]["Address"]
+      }
+
+      var distance = geolib.getDistance(
+        concordiaCoord,
+        {latitude: lat, longitude: long}
+      );
+
+      location = {}
+      location['distance'] = distance
+      if (temp['distance'] > location['distance']){
+        location['lat'] = lat
+        location['name'] = name
+        location['long'] = long
+        location['address'] = address
+        temp['lat']  = location['lat'] 
+        temp['long'] = location['long']
+        temp['address'] = location['address']
+        temp['distance'] = location['distance']
+        temp['name'] = location['name']
+      }
+    }
+    console.log('BRUHH' +  temp);
+    this.setState({
+      location: temp,
+    }, () => {
+    this.setState({isLoading: false})
+    });
+  }
+
  async getMore() {
     var rr = await this.getEvents();
+    console.log(this.state.location)
+    this.matchMore(this.state.location)
     var temp = this.state.events;
     for (let i = 0; i < rr.result.results.length; i++) {
       temp.push(rr.result.results[i]);
@@ -135,8 +204,8 @@ export default class SettingsScreen extends React.Component {
           </Text>
 
           <Text style={{ width: '100%',backgroundColor: '#fff', textAlign: 'center', borderRadius: 10, overflow: 'hidden', marginTop: 5, padding: 10}}>
-                      See more
-                    </Text>
+            See more
+          </Text>
         </TouchableOpacity>
       </View>
     );
