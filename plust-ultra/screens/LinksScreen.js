@@ -82,7 +82,7 @@ export default class LinksScreen extends React.Component {
     heritage_index = ["heritage", "history"];
     cultural_index = ["culture", "museum", "theatre", "cinema", "show room", "performance", "exhibition"];
     event_index = ["event"];
-    pool_index = ["pool"];
+    pool_index = ["pool", "swim", "swimming", "water"];
     school_index = ["school", "study"];
     library_index = ["library"];
     indexes = [heritage_index, cultural_index, event_index, pool_index, school_index, library_index]
@@ -90,7 +90,6 @@ export default class LinksScreen extends React.Component {
     for (var j in indexes){
       index = indexes[j]
       key = index[0]
-      console.log("-----")
       for (var i=0; i<index.length; i++){
         keyword = index[i]
         if (text.toLowerCase().indexOf(keyword.toLowerCase()) > -1){
@@ -127,11 +126,13 @@ responseSpecify(){
 }
 
 analyze(text, key){
-  aa = "Here are some events from the "+key+" category...";
+  msg = "Here are some events from the "+key+" category...";
+  json = this.parseJson(key)
+  console.log(json)
   setTimeout(() => {
     const message = {
       _id: id,
-      text: aa,
+      text: msg,
       createdAt: new Date(),
       user: {
         _id: 2,
@@ -145,9 +146,29 @@ analyze(text, key){
     }));
 
     setTimeout(() => {
-      this.props.navigation.navigate('Settings');
+      this.props.navigation.navigate('Settings', {json:json, key:key});
     }, 3000)
   }, 1000);
+}
+
+parseJson(key){
+  switch(key){
+    case "pool":
+      return require('../datasets/pool.json')
+    case "school":
+      return require('../datasets/school.json')
+    case "monuments":
+      return require('../datasets/monuments.json')
+    case "culture":
+      return require('../datasets/culturalplaces.json')
+    case "heritage":
+      return require('../datasets/heritage_sites.json')
+    default:
+      return
+  }
+}
+
+loadData(){
 }
 
 render() {
