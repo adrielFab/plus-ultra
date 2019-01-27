@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { MapView } from "expo";
 import Client from 'predicthq';
 
@@ -7,6 +7,7 @@ let client = new Client({access_token: "jiK4GKwAlDUq2MG5D9xqv2d1n6PKJd"});
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
+    title: 'Search Results',
   };
 
   constructor(props) {
@@ -15,11 +16,24 @@ export default class SettingsScreen extends React.Component {
       events: [],
       isLoading: true,
       nextUrl: null,
+      distance: 1
     };
   }
 
   getEvents () {
-    return client.events.search({'within': '1km@45.4948609,-73.5780571'});
+    return client.events.search({'within': `${this.state.distance}km@45.4948609,-73.5780571`});
+  }
+
+ async getMore() {
+    var rr = await this.getEvents();
+    console.log(rr.result);
+    var temp = this.state.events;
+    for (let i = 0; i < rr.result.results.length; i++) {
+      temp.push(rr.result.results[i]);
+    }
+    this.setState({
+      events: temp,
+    });
   }
 
   async componentWillMount() {
@@ -28,12 +42,13 @@ export default class SettingsScreen extends React.Component {
     this.setState({
       events: rr.result.results,
       isLoading: false,
-      nextUrl: rr.result.next,
+      distance: this.state.distance + 1,
     });
   }
 
   render() {
     return (
+      <View style={{ flex: 1}}>
       <MapView
         style={{
           flex: 1,
@@ -59,20 +74,19 @@ export default class SettingsScreen extends React.Component {
                  key={index}
                  coordinate={coords}
                  title={event.title}
-                 description={"ashdjkashjdhkajsdhkj"}
+                 description={event.description}
               />
           );
         })
      }
-           <View style={{
-        position: 'absolute',
-        bottom: 0, right: 0
-      }}>
-        <Text>
-          Fetch more data
-        </Text>
-      </View>
       </MapView>
+      <TouchableOpacity onPress={() => this.getMore()} style={{ position: 'absolute', bottom: 60, left: 40 ,width: '80%', }}>
+          <Text style={{ fontSize: 16,backgroundColor: '#586cb2', overflow: 'hidden', borderRadius: 10, color: '#fff', textAlign: 'center',
+        paddingVertical: 10}}>
+            See more
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
