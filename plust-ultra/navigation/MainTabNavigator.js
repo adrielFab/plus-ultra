@@ -10,7 +10,6 @@ const LinksStack = createStackNavigator({
   Links: LinksScreen,
   Settings: SettingsScreen,
 }, {
-  initialRouteName: 'Settings',
 });
 
 export default LinksStack;
