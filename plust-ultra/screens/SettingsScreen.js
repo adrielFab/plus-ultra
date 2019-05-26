@@ -99,6 +99,9 @@ export default class SettingsScreen extends React.Component {
       } else if (key == "culture"){
         lat = json[j]["Latitude"]
         long = json[j]["Longitude"]
+      } else if (key == "heritage"){
+        lat = json[j]["LAT"]
+        long = json[j]["LONG"]
       }
 
       if (lat === matched["lat"] && long === matched["long"]){
