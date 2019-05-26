@@ -192,8 +192,8 @@ export default class SettingsScreen extends React.Component {
           height: 100,
         }}
         initialRegion={{
-          latitude: 45.4948609,
-          longitude: -73.5780571,
+          latitude: this.state.location.lat,
+          longitude: this.state.location.long,
           latitudeDelta: 0.0022,
           longitudeDelta: 0.0121
         }}
