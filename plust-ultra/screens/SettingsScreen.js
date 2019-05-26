@@ -113,6 +113,11 @@ export default class SettingsScreen extends React.Component {
         name = json[i]["Name of the municipal cultural Place"]
         long = json[i]["Longitude"]
         address = json[i]["Address"]
+      } else if (key == "heritage"){
+        lat = json[i]["LAT"]
+        long = json[i]["LONG"]
+        name = json[i]["NAME"]
+        address = json[i]["ADDRESS"]
       }
 
       var distance = geolib.getDistance(

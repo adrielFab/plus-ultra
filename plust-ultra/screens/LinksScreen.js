@@ -240,7 +240,7 @@ parseJson(key){
     case "culture":
       return require('../datasets/culturalplaces.json')
     case "heritage":
-      return require('../datasets/heritage_sites.json')
+      return require('../datasets/heritage_ottawa.json')
     default:
       return
   }
