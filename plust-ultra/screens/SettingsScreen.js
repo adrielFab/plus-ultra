@@ -30,7 +30,7 @@ export default class SettingsScreen extends React.Component {
   match(){
     var concordiaCoord = {latitude: 45.4954, longitude: -73.5792}
     var temp = {};
-    temp['distance'] = 10000;
+    temp['distance'] = 1000000;
     var lat;
     var name;
     var long;
@@ -83,7 +83,7 @@ export default class SettingsScreen extends React.Component {
   matchMore(matched){
     var concordiaCoord = {latitude: 45.4954, longitude: -73.5792}
     var temp = {};
-    temp['distance'] = 10000;
+    temp['distance'] = 1000000;
     var lat;
     var name;
     var long;
