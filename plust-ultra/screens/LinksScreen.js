@@ -118,29 +118,16 @@ export default class LinksScreen extends React.Component {
       return;
     }
     id += 1;
-    keyword = '';
-    heritage_index = ['heritage', 'history'];
-    cultural_index = [
-      'culture',
-      'museum',
-      'theatre',
-      'cinema',
-      'show room',
-      'performance',
-      'exhibition'
-    ];
-    event_index = ['event'];
-    pool_index = ['pool', 'swim', 'swimming', 'water'];
-    school_index = ['school', 'study'];
-    library_index = ['library'];
-    indexes = [
-      heritage_index,
-      cultural_index,
-      event_index,
-      pool_index,
-      school_index,
-      library_index
-    ];
+    keyword = "";
+    heritage_index = ["heritage", "history"];
+    cultural_index = ["culture", "museum", "theatre", "cinema", "show room", "performance", "exhibition"];
+    event_index = ["event"];
+    pool_index = ["pool", "swim", "swimming", "water"];
+    school_index = ["school", "study"];
+    library_index = ["library"];
+    festival_index = ["festival", "festivities", "fest"];
+    art_index = ["art", "paint", "painting", "artistic", "artist", "painter", "picasso"];
+    indexes = [heritage_index, cultural_index, event_index, pool_index, school_index, library_index, festival_index, art_index]
 
     for (var j in indexes) {
       index = indexes[j];
@@ -234,12 +221,29 @@ export default class LinksScreen extends React.Component {
           typingText: null
         }));
         id += 1;
-        setTimeout(() => {
-          id += 1;
-          this.props.navigation.navigate('Settings', { json: json, key: key });
-        }, 3000);
-      }, 4000);
-    }, 3000);
+        this.props.navigation.navigate('Settings', {json:json, key:key});
+      }, 3000);
+    }, 4000);
+}
+
+parseJson(key){
+  switch(key){
+    case "pool":
+      return require('../datasets/pool.json')
+    case "festival":
+      return require('../datasets/festival_ottawa.json')
+    case "school":
+      return require('../datasets/school.json')
+    case "monuments":
+      return require('../datasets/monuments.json')
+    case "culture":
+      return require('../datasets/cultural_ottawa.json')
+    case "heritage":
+      return require('../datasets/heritage_ottawa.json')
+    case "art":
+      return require('../datasets/art_ottawa.json')
+    default:
+      return
   }
 
   parseJson(key) {
