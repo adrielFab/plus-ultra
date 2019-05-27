@@ -127,7 +127,9 @@ export default class LinksScreen extends React.Component {
     pool_index = ["pool", "swim", "swimming", "water"];
     school_index = ["school", "study"];
     library_index = ["library"];
-    indexes = [heritage_index, cultural_index, event_index, pool_index, school_index, library_index]
+    festival_index = ["festival", "festivities", "fest"];
+    art_index = ["art", "paint", "painting", "artistic", "artist"];
+    indexes = [heritage_index, cultural_index, event_index, pool_index, school_index, library_index, festival_index, art_index]
 
     for (var j in indexes){
       index = indexes[j]
@@ -233,6 +235,8 @@ parseJson(key){
   switch(key){
     case "pool":
       return require('../datasets/pool.json')
+    case "festival":
+      return require('../datasets/festival_ottawa.json')
     case "school":
       return require('../datasets/school.json')
     case "monuments":
@@ -241,6 +245,8 @@ parseJson(key){
       return require('../datasets/cultural_ottawa.json')
     case "heritage":
       return require('../datasets/heritage_ottawa.json')
+    case "art":
+      return require('../datasets/art_ottawa.json')
     default:
       return
   }

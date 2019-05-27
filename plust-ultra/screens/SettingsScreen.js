@@ -51,6 +51,16 @@ export default class SettingsScreen extends React.Component {
         long = json[i]["LONG"]
         name = json[i]["NAME"]
         address = json[i]["ADDRESS"]
+      } else if (key == "festival"){
+        lat = json[i]["LAT"]
+        long = json[i]["LONG"]
+        name = json[i]["NAME"]
+        address = json[i]["ADDRESS"]
+      } else if (key == "art"){
+        lat = json[i]["LAT"]
+        long = json[i]["LONG"]
+        name = json[i]["ARTWORK"]
+        address = json[i]["ADDRESS"]
       }
 
       var distance = geolib.getDistance(
@@ -102,6 +112,12 @@ export default class SettingsScreen extends React.Component {
       } else if (key == "heritage"){
         lat = json[j]["LAT"]
         long = json[j]["LONG"]
+      } else if (key == "festival"){
+        lat = json[j]["LAT"]
+        long = json[j]["LONG"]
+      } else if (key == "art"){
+        lat = json[j]["LAT"]
+        lat = json[j]["LONG"]
       }
 
       if (lat === matched["lat"] && long === matched["long"]){
@@ -125,6 +141,16 @@ export default class SettingsScreen extends React.Component {
         lat = json[i]["LAT"]
         long = json[i]["LONG"]
         name = json[i]["NAME"]
+        address = json[i]["ADDRESS"]
+      } else if (key == "festival"){
+        lat = json[i]["LAT"]
+        long = json[i]["LONG"]
+        name = json[i]["NAME"]
+        address = json[i]["ADDRESS"]
+      } else if (key == "art"){
+        lat = json[i]["LAT"]
+        long = json[i]["LONG"]
+        name = json[i]["ARTWORK"]
         address = json[i]["ADDRESS"]
       }
 
