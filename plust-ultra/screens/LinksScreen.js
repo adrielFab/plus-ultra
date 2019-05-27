@@ -128,7 +128,7 @@ export default class LinksScreen extends React.Component {
     school_index = ["school", "study"];
     library_index = ["library"];
     festival_index = ["festival", "festivities", "fest"];
-    art_index = ["art", "paint", "painting", "artistic", "artist"];
+    art_index = ["art", "paint", "painting", "artistic", "artist", "painter", "picasso"];
     indexes = [heritage_index, cultural_index, event_index, pool_index, school_index, library_index, festival_index, art_index]
 
     for (var j in indexes){
