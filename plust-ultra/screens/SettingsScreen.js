@@ -1,3 +1,6 @@
+/**
+ * Facility and location page
+ */
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { MapView } from "expo";
@@ -21,6 +24,18 @@ export default class SettingsScreen extends React.Component {
       key: null,
       location: null,
     };
+  }
+
+  componentWillMount() {
+    // var rr = await this.getEvents();
+    // console.log(rr.result);
+    // console.log(this.props.navigation.state.params.json)
+    this.setState({
+      distance: this.state.distance + 1,
+      json: this.props.navigation.state.params.json,
+      key: this.props.navigation.state.params.key,
+    });
+    this.match()
   }
 
   getEvents () {
@@ -154,18 +169,6 @@ export default class SettingsScreen extends React.Component {
       events: temp,
       distance: this.state.distance + 1,
     });
-  }
-
-  componentWillMount() {
-    // var rr = await this.getEvents();
-    // console.log(rr.result);
-    // console.log(this.props.navigation.state.params.json)
-    this.setState({
-      distance: this.state.distance + 1,
-      json: this.props.navigation.state.params.json,
-      key: this.props.navigation.state.params.key,
-    });
-    this.match()
   }
 
   render() {
